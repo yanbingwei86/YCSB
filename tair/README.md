@@ -27,7 +27,7 @@ This section describes how to run YCSB on Tair.
 
 Git clone YCSB and compile:
 
-    git clone http://github.com/brianfrankcooper/YCSB.git
+    git clone http://github.com/sel-fish/YCSB.git
     cd YCSB
     mvn -pl com.yahoo.ycsb:tair-binding -am clean package
 
@@ -36,13 +36,13 @@ Git clone YCSB and compile:
 Set the host, port, and password (do not tair auth is not turned on) in the 
 workload you plan to run.
 
-- `tair.master`
-- `tair.slave`
+- `tair.mastercs`
+- `tair.slavecs`
 - `tair.groupname`
 
 Or, you can set configs with the shell command, EG:
 
-    ./bin/ycsb load tair -s -P workloads/workloada -p "tair.master=127.0.0.1:5198" -p "tair.groupname=group_1" > outputLoad.txt
+    ./bin/ycsb load tair -s -P workloads/workloada -p "tair.mastercs=127.0.0.1:5198" -p "tair.groupname=group_1" > outputLoad.txt
 
 ### 5. Load data and run tests
 

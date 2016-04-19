@@ -24,6 +24,7 @@
 
 package com.yahoo.ycsb.db;
 
+import com.taobao.tair.impl.DefaultTairManager;
 import com.yahoo.ycsb.ByteIterator;
 import com.yahoo.ycsb.DB;
 import com.yahoo.ycsb.DBException;
@@ -31,12 +32,7 @@ import com.yahoo.ycsb.Status;
 import com.yahoo.ycsb.StringByteIterator;
 
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * YCSB binding for <a href="http://tair.taobao.org/">Tair</a>.
@@ -45,37 +41,45 @@ import java.util.Vector;
  */
 public class TairClient extends DB {
 
-  private Jedis jedis;
+  private DefaultTairManager tairManager;
 
-  public static final String MASTER = "tair.master";
-  public static final String SLAVE = "tair.slave";
+  public static final String MASTERCS = "tair.mastercs";
+  public static final String SLAVECS = "tair.slavecs";
   public static final String GROUPNAME = "tair.groupname";
 
   public static final String INDEX_KEY = "_indices";
 
   public void init() throws DBException {
     Properties props = getProperties();
-    int port;
+    List<String> configserverList = new ArrayList<String>();
 
-    String portString = props.getProperty(PORT_PROPERTY);
-    if (portString != null) {
-      port = Integer.parseInt(portString);
+    String masterString = props.getProperty(MASTERCS);
+    if (masterString != null) {
+      configserverList.add(masterString);
     } else {
-      port = Protocol.DEFAULT_PORT;
+      throw new DBException("must specify master configserver info");
     }
-    String host = props.getProperty(HOST_PROPERTY);
 
-    jedis = new Jedis(host, port);
-    jedis.connect();
-
-    String password = props.getProperty(PASSWORD_PROPERTY);
-    if (password != null) {
-      jedis.auth(password);
+    String slaveString = props.getProperty(SLAVECS);
+    if (slaveString != null) {
+      configserverList.add(slaveString);
+    } else {
+      configserverList.add(masterString);
     }
+
+    String groupname = props.getProperty(GROUPNAME);
+    if (groupname == null) {
+      throw new DBException("must specify groupname info");
+    }
+
+    tairManager = new DefaultTairManager();
+    tairManager.setConfigServerList(configserverList);
+    tairManager.setGroupName(groupname);
+    tairManager.init();
   }
 
   public void cleanup() throws DBException {
-    jedis.disconnect();
+    tairManager.close();
   }
 
   /*
