@@ -24,11 +24,10 @@
 
 package com.yahoo.ycsb.db;
 
+import com.taobao.tair.ResultCode;
 import com.taobao.tair.impl.DefaultTairManager;
-import com.yahoo.ycsb.ByteIterator;
-import com.yahoo.ycsb.DB;
-import com.yahoo.ycsb.DBException;
-import com.yahoo.ycsb.Status;
+import com.yahoo.ycsb.*;
+
 import java.util.*;
 
 /**
@@ -39,6 +38,8 @@ import java.util.*;
 public class TairClient extends DB {
 
   private DefaultTairManager tairManager;
+  private int defaultNamespace = 961;
+  private int maxValueLength = 4096;
 
   public static final String MASTERCS = "tair.mastercs";
   public static final String SLAVECS = "tair.slavecs";
@@ -89,33 +90,56 @@ public class TairClient extends DB {
     return key.hashCode();
   }
 
+  private String getValueStr(HashMap<String, ByteIterator> values) {
+    HashMap<String, String> stringMap = StringByteIterator.getStringMap(values);
+    StringBuffer rslt = new StringBuffer();
+    for (Map.Entry<String, String> pair : stringMap.entrySet()) {
+      rslt.append(pair.getKey());
+      rslt.append(pair.getValue());
+      if (rslt.length() > maxValueLength) {
+        return rslt.substring(0, maxValueLength);
+      }
+    }
+    return rslt.toString();
+  }
+
   @Override
   public Status read(String table, String key, Set<String> fields,
       HashMap<String, ByteIterator> result) {
     return Status.NOT_IMPLEMENTED;
-
   }
 
   @Override
   public Status insert(String table, String key,
       HashMap<String, ByteIterator> values) {
-    return Status.NOT_IMPLEMENTED;
+    String value = getValueStr(values);
+    System.out.println("insert..., key: " + key + ", value: " + value);
+    ResultCode code = tairManager.put(defaultNamespace, key, value);
+    if (code.equals(ResultCode.SUCCESS)) {
+      return Status.OK;
+    } else {
+      System.out.println(code);
+      return Status.ERROR;
+    }
   }
 
   @Override
   public Status delete(String table, String key) {
+    System.out.println("delete...");
     return Status.NOT_IMPLEMENTED;
   }
 
   @Override
   public Status update(String table, String key,
       HashMap<String, ByteIterator> values) {
+    System.out.println("update...");
     return Status.NOT_IMPLEMENTED;
   }
 
   @Override
   public Status scan(String table, String startkey, int recordcount,
       Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
+    System.out.println("scan...");
     return Status.NOT_IMPLEMENTED;
   }
 
