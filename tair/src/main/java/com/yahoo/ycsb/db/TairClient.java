@@ -24,6 +24,8 @@
 
 package com.yahoo.ycsb.db;
 
+import com.taobao.tair.DataEntry;
+import com.taobao.tair.Result;
 import com.taobao.tair.ResultCode;
 import com.taobao.tair.impl.DefaultTairManager;
 import com.yahoo.ycsb.*;
@@ -106,14 +108,20 @@ public class TairClient extends DB {
   @Override
   public Status read(String table, String key, Set<String> fields,
       HashMap<String, ByteIterator> result) {
-    return Status.NOT_IMPLEMENTED;
+    Result<DataEntry> rde = tairManager.get(defaultNamespace, key);
+    if (rde.getRc().equals(ResultCode.SUCCESS)) {
+      return Status.OK;
+    } else if (rde.getRc().equals(ResultCode.DATANOTEXSITS)) {
+      return Status.NOT_FOUND;
+    }
+    return Status.ERROR;
   }
 
   @Override
   public Status insert(String table, String key,
       HashMap<String, ByteIterator> values) {
     String value = getValueStr(values);
-    System.out.println("insert..., key: " + key + ", value: " + value);
+//    System.out.println("insert..., key: " + key + ", value: " + value);
     ResultCode code = tairManager.put(defaultNamespace, key, value);
     if (code.equals(ResultCode.SUCCESS)) {
       return Status.OK;
@@ -132,8 +140,7 @@ public class TairClient extends DB {
   @Override
   public Status update(String table, String key,
       HashMap<String, ByteIterator> values) {
-    System.out.println("update...");
-    return Status.NOT_IMPLEMENTED;
+    return insert(table, key, values);
   }
 
   @Override
