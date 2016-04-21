@@ -24,67 +24,96 @@
 
 package com.yahoo.ycsb.db;
 
+import com.mogujie.mogucache.config.CachePoolConfig;
+import com.mogujie.mogucache.exception.CacheConnectionException;
+import com.mogujie.mogucache.link.MoguCache;
+import com.mogujie.mogucache.node.Result;
+import com.mogujie.mogucache.pool.MoguCachePool;
 import com.yahoo.ycsb.*;
 import java.util.*;
 
 /**
- * YCSB binding for Mogucache</a>.
+ * YCSB binding for Mogucache.
  *
  * See {@code mogucache/README.md} for details.
  */
 public class MogucacheClient extends DB {
-
-  private DefaultMogucacheManager mogucacheManager;
-  private int defaultNamespace = 961;
   private int maxValueLength = 4096;
-
   public static final String MASTERCS = "mogucache.mastercs";
   public static final String SLAVECS = "mogucache.slavecs";
-  public static final String GROUPNAME = "mogucache.groupname";
+  public static final String NAMESPACE = "mogucache.namespace";
 
-  public static final String INDEX_KEY = "_indices";
+  private MoguCachePool pool = null;
+  private String masterIP = "";
+  private int masterPort = 0;
+  private String slaveIP = "";
+  private int slavePort = 0;
+  private String namespace = "";
+
+  public static String getHost(String address) {
+    String host = null;
+    if (address != null) {
+      String[] a = address.split(":");
+      if (a.length >= 2) {
+        host = a[0].trim();
+      }
+    }
+    return host;
+  }
+
+  public static int getPort(String address) {
+    int port = 0;
+    if (address != null) {
+      String[] a = address.split(":");
+      if (a.length >= 2) {
+        port = Integer.parseInt(a[1].trim());
+      }
+    }
+    return port;
+  }
 
   public void init() throws DBException {
     Properties props = getProperties();
-    List<String> configserverList = new ArrayList<String>();
 
     String masterString = props.getProperty(MASTERCS);
     if (masterString != null) {
-      configserverList.add(masterString);
+      this.masterIP = getHost(masterString);
+      this.masterPort = getPort(masterString);
     } else {
       throw new DBException("must specify master configserver info");
     }
 
     String slaveString = props.getProperty(SLAVECS);
     if (slaveString != null) {
-      configserverList.add(slaveString);
+      this.slaveIP = getHost(slaveString);
+      this.slavePort = getPort(slaveString);
     } else {
-      configserverList.add(masterString);
+      throw new DBException("must specify slave configserver info");
     }
 
-    String groupname = props.getProperty(GROUPNAME);
-    if (groupname == null) {
-      throw new DBException("must specify groupname info");
+    namespace = props.getProperty(NAMESPACE);
+    if (namespace == null) {
+      throw new DBException("must specify namespace info");
     }
 
-    mogucacheManager = new DefaultMogucacheManager();
-    mogucacheManager.setConfigServerList(configserverList);
-    mogucacheManager.setGroupName(groupname);
-    mogucacheManager.init();
+    CachePoolConfig config = new CachePoolConfig();
+    config.setMaxActive(30);
+    config.setMaxIdle(30);
+    config.setMaxWait(512);
+    config.setTestOnBorrow(false);
+    config.setTestOnReturn(false);
+
+    pool = new MoguCachePool(config, this.masterIP, this.masterPort,
+            this.slaveIP, this.slavePort, this.namespace, 20000);
+    try {
+      pool.init();
+    } catch (Exception e) {
+      throw new DBException("mogucache init failed");
+    }
   }
 
   public void cleanup() throws DBException {
-    mogucacheManager.close();
-  }
-
-  /*
-   * Calculate a hash for a key to store it in an index. The actual return value
-   * of this function is not interesting -- it primarily needs to be fast and
-   * scattered along the whole space of doubles. In a real world scenario one
-   * would probably use the ASCII values of the keys.
-   */
-  private double hash(String key) {
-    return key.hashCode();
+    pool.destroy();
   }
 
   private String getValueStr(HashMap<String, ByteIterator> values) {
@@ -102,28 +131,56 @@ public class MogucacheClient extends DB {
 
   @Override
   public Status read(String table, String key, Set<String> fields,
-      HashMap<String, ByteIterator> result) {
-    Result<DataEntry> rde = mogucacheManager.get(defaultNamespace, key);
-    if (rde.getRc().equals(ResultCode.SUCCESS)) {
-      return Status.OK;
-    } else if (rde.getRc().equals(ResultCode.DATANOTEXSITS)) {
-      return Status.NOT_FOUND;
+                     HashMap<String, ByteIterator> result) {
+    MoguCache cache = null;
+    try {
+      cache = pool.getResource();
+      Result<String> rslt = cache.get(key);
+      if (rslt.isSuccess()) {
+        if (null != rslt.getValue()) {
+          return Status.OK;
+        } else {
+          return Status.NOT_FOUND;
+        }
+      } else {
+        return Status.ERROR;
+      }
+    } catch (CacheConnectionException e) {
+      if (null != cache) {
+        pool.returnBrokenResource(cache);
+      }
+      cache = null;
+    } finally {
+      if (null != cache) {
+        pool.returnResource(cache);
+      }
     }
     return Status.ERROR;
   }
 
   @Override
   public Status insert(String table, String key,
-      HashMap<String, ByteIterator> values) {
-    String value = getValueStr(values);
-//    System.out.println("insert..., key: " + key + ", value: " + value);
-    ResultCode code = mogucacheManager.put(defaultNamespace, key, value);
-    if (code.equals(ResultCode.SUCCESS)) {
-      return Status.OK;
-    } else {
-      System.out.println(code);
-      return Status.ERROR;
+                       HashMap<String, ByteIterator> values) {
+    MoguCache cache = null;
+    try {
+      cache = pool.getResource();
+      Result<String> rslt = cache.set(key, getValueStr(values));
+      if (rslt.isSuccess()) {
+        return Status.OK;
+      } else {
+        return Status.ERROR;
+      }
+    } catch (CacheConnectionException e) {
+      if (null != cache) {
+        pool.returnBrokenResource(cache);
+      }
+      cache = null;
+    } finally {
+      if (null != cache) {
+        pool.returnResource(cache);
+      }
     }
+    return Status.ERROR;
   }
 
   @Override
@@ -134,13 +191,13 @@ public class MogucacheClient extends DB {
 
   @Override
   public Status update(String table, String key,
-      HashMap<String, ByteIterator> values) {
+                       HashMap<String, ByteIterator> values) {
     return insert(table, key, values);
   }
 
   @Override
   public Status scan(String table, String startkey, int recordcount,
-      Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
+                     Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
     System.out.println("scan...");
     return Status.NOT_IMPLEMENTED;
   }

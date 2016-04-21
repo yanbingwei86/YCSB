@@ -39,15 +39,13 @@ import java.util.*;
  */
 public class TairClient extends DB {
 
-  private DefaultTairManager tairManager;
+  private DefaultTairManager tairManager = null;
   private int defaultNamespace = 961;
   private int maxValueLength = 4096;
 
   public static final String MASTERCS = "tair.mastercs";
   public static final String SLAVECS = "tair.slavecs";
   public static final String GROUPNAME = "tair.groupname";
-
-  public static final String INDEX_KEY = "_indices";
 
   public void init() throws DBException {
     Properties props = getProperties();
@@ -107,7 +105,7 @@ public class TairClient extends DB {
 
   @Override
   public Status read(String table, String key, Set<String> fields,
-      HashMap<String, ByteIterator> result) {
+                     HashMap<String, ByteIterator> result) {
     Result<DataEntry> rde = tairManager.get(defaultNamespace, key);
     if (rde.getRc().equals(ResultCode.SUCCESS)) {
       return Status.OK;
@@ -119,7 +117,7 @@ public class TairClient extends DB {
 
   @Override
   public Status insert(String table, String key,
-      HashMap<String, ByteIterator> values) {
+                       HashMap<String, ByteIterator> values) {
     String value = getValueStr(values);
 //    System.out.println("insert..., key: " + key + ", value: " + value);
     ResultCode code = tairManager.put(defaultNamespace, key, value);
@@ -139,13 +137,13 @@ public class TairClient extends DB {
 
   @Override
   public Status update(String table, String key,
-      HashMap<String, ByteIterator> values) {
+                       HashMap<String, ByteIterator> values) {
     return insert(table, key, values);
   }
 
   @Override
   public Status scan(String table, String startkey, int recordcount,
-      Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
+                     Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
     System.out.println("scan...");
     return Status.NOT_IMPLEMENTED;
   }
