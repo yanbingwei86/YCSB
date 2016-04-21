@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -lt 1 ] ; then
+  echo "usage: remote_install \$host"
+  exit -1
+fi
+
+version=`grep '<groupId>com.yahoo.ycsb</groupId>' pom.xml  -A 2 |grep '<version>' |sed 's/^.*>\(.*\)<.*$/\1/g'`
+engine=mogucache
+host=$1
+port=10022
+
+# mogucache/target/ycsb-mogucache-binding-0.9.0-SNAPSHOT.tar.gz
+gzFileName=ycsb-$engine-binding-$version.tar.gz
+gzFilePath=$engine/target/$gzFileName
+
+# mvn -pl com.yahoo.ycsb:mogucache-binding -am clean package
+# mvn -pl com.yahoo.ycsb:$engine-binding -am clean package
+# if [ $? -ne 0 ] ; then
+#   echo err while mvn build
+#   exit -1
+# fi
+
+if [ -f $gzFilePath ] ; then
+  echo scp -P $port $gzFilePath $host:~/
+  scp -P $port $gzFilePath $host:~/
+  echo ssh -p $port $host "tar xvf $gzFileName; rm -rf $gzFileName"
+  ssh -p $port $host "tar xvf $gzFileName; rm -rf $gzFileName"
+  exit 0
+else
+  echo $gzFilePath not exist
+  exit -1
+fi
