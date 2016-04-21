@@ -38,11 +38,11 @@ workload you plan to run.
 
 - `mogucache.mastercs`
 - `mogucache.slavecs`
-- `mogucache.groupname`
+- `mogucache.namespace`
 
 Or, you can set configs with the shell command, EG:
 
-    ./bin/ycsb load mogucache -s -P workloads/workloada -p "mogucache.mastercs=127.0.0.1:5198" -p "mogucache.groupname=group_1" > outputLoad.txt
+    ./bin/ycsb load mogucache -s -P workloads/workloada -p "mogucache.mastercs=127.0.0.1:5198" -p "mogucache.namespace=bizname_1" > outputLoad.txt
 
 ### 5. Load data and run tests
 
