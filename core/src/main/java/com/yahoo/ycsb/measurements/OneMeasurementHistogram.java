@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Properties;
 
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.yahoo.ycsb.measurements.exporter.MeasurementsExporter;
 
 
@@ -114,12 +111,12 @@ public class OneMeasurementHistogram extends OneMeasurement
     windowoperations++;
     windowtotallatency += latency;
 
-    if ( (min<0) || (latency<min) )
+    if ((min<0) || (latency<min))
     {
       min=latency;
     }
 
-    if ( (max<0) || (latency>max) )
+    if ((max<0) || (latency>max))
     {
       max=latency;
     }
@@ -141,7 +138,7 @@ public class OneMeasurementHistogram extends OneMeasurement
     for (int i=0; i<_buckets; i++)
     {
       opcounter+=histogram[i];
-      if ( (!done95th) && (((double)opcounter)/((double)operations)>=0.95) )
+      if ((!done95th) && (((double)opcounter)/((double)operations)>=0.95))
       {
         exporter.write(getName(), "95thPercentileLatency(us)", i*1000);
         done95th=true;

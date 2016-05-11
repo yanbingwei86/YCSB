@@ -171,11 +171,11 @@ class StatusThread extends Thread
     boolean alldone=false;
     long now=System.nanoTime();
 
-    while( !alldone && now < deadline ) {
+    while(!alldone && now < deadline) {
       try {
         alldone = _completeLatch.await(deadline-now, TimeUnit.NANOSECONDS);
       }
-      catch( InterruptedException ie) {
+      catch(InterruptedException ie) {
         // If we are interrupted the thread is being asked to shutdown.
         // Return true to indicate that and reset the interrupt state
         // of the thread.
@@ -933,6 +933,7 @@ public class Client
       }
       catch (InterruptedException e)
       {
+        System.out.println("got InterruptedException");
       }
     }
 
@@ -950,6 +951,7 @@ public class Client
       try {
         statusthread.join();
       } catch (InterruptedException e) {
+        System.out.println("got InterruptedException");
       }
     }
 

@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.util.Vector;
 import java.util.Properties;
 import java.text.DecimalFormat;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.yahoo.ycsb.measurements.exporter.MeasurementsExporter;
 
 class SeriesUnit
@@ -88,7 +85,7 @@ public class OneMeasurementTimeSeries extends OneMeasurement
 
     long unit=((now-start)/_granularity)*_granularity;
 
-    if ( (unit>currentunit) || (forceend) )
+    if ((unit>currentunit) || (forceend))
     {
       double avg=((double)sum)/((double)count);
       _measurements.add(new SeriesUnit(currentunit,avg));
@@ -117,7 +114,7 @@ public class OneMeasurementTimeSeries extends OneMeasurement
       max=latency;
     }
 
-    if ( (latency<min) || (min<0) )
+    if ((latency<min) || (min<0))
     {
       min=latency;
     }

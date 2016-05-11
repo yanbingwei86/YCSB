@@ -108,7 +108,7 @@ LICENSE file.
     <!--<module>accumulo</module>-->
     <!--<module>asynchbase</module>-->
     <!--<module>cassandra</module>-->
-    <!--<module>cassandra2</module>-->
+    <module>cassandra2</module>
     <!--<module>couchbase</module>-->
     <!--<module>couchbase2</module>-->
     <!--<module>distribution</module>-->
@@ -119,7 +119,7 @@ LICENSE file.
     <!--<module>googledatastore</module>-->
     <!--<module>hbase094</module>-->
     <!--<module>hbase098</module>-->
-    <!--<module>hbase10</module>-->
+    <module>hbase10</module>
     <!--<module>hypertable</module>-->
     <!--<module>infinispan</module>-->
     <!--<module>jdbc</module>-->

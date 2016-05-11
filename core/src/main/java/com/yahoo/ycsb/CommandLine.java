@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Vector;
-
-import com.yahoo.ycsb.Client;
 import com.yahoo.ycsb.workloads.*;
 
 /**
@@ -71,12 +69,12 @@ public class CommandLine
 	 Properties fileprops=new Properties();
 	 String table=CoreWorkload.TABLENAME_PROPERTY_DEFAULT;
 
-	 while ( (argindex<args.length) && (args[argindex].startsWith("-")) )
+	 while ((argindex<args.length) && (args[argindex].startsWith("-")))
 	 {
-	    if ( (args[argindex].compareTo("-help")==0) ||
+	    if ((args[argindex].compareTo("-help")==0) ||
 		 (args[argindex].compareTo("--help")==0) ||
 		 (args[argindex].compareTo("-?")==0) ||
-		 (args[argindex].compareTo("--?")==0) )
+		 (args[argindex].compareTo("--?")==0))
 	    {
 	       usageMessage();
 	       System.exit(0);
@@ -140,7 +138,7 @@ public class CommandLine
 			   
 	       String name=args[argindex].substring(0,eq);
 	       String value=args[argindex].substring(eq+1);
-	       props.put(name,value);
+	       props.put(name, value);
 	       //System.out.println("["+name+"]=["+value+"]");
 	       argindex++;
 	    }

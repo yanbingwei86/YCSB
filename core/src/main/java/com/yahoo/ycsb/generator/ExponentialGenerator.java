@@ -76,7 +76,7 @@ public class ExponentialGenerator extends NumberGenerator
 	public double mean() {
 		return 1.0/_gamma;
 	}
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         ExponentialGenerator e = new ExponentialGenerator(90, 100);
         int j = 0;
         for(int i = 0; i < 1000; i++) {

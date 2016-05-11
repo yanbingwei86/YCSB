@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -35,11 +34,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class GoodBadUglyDB extends DB {
     public static final String SIMULATE_DELAY = "gbudb.delays";
     public static final String SIMULATE_DELAY_DEFAULT = "200,1000,10000,50000,100000";
-    long delays[];
+    long[] delays;
     static ReadWriteLock DB_ACCESS = new ReentrantReadWriteLock();
 
     public GoodBadUglyDB() {
-        delays = new long[] { 200, 1000, 10000, 50000, 200000 };
+        delays = new long[] {200, 1000, 10000, 50000, 200000};
     }
 
     void delay() {

@@ -17,14 +17,12 @@
 
 package com.yahoo.ycsb.measurements;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.HdrHistogram.Histogram;
 import org.HdrHistogram.HistogramLogWriter;
@@ -187,7 +185,7 @@ public class OneMeasurementHdrHistogram extends OneMeasurement {
      * @return ordinal string
      */
     private String ordinal(int i) {
-      String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+      String[] suffixes = new String[] {"th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"};
       switch (i % 100) {
         case 11:
         case 12:

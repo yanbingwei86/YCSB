@@ -81,11 +81,11 @@ public class DBWrapper extends DB
             REPORT_LATENCY_FOR_EACH_ERROR_PROPERTY_DEFAULT));
 
     if (!reportLatencyForEachError) {
-      String latencyTrackedErrors = getProperties().getProperty(
+      String latencyTrackedErrorsStr = getProperties().getProperty(
           LATENCY_TRACKED_ERRORS_PROPERTY, null);
-      if (latencyTrackedErrors != null) {
+      if (latencyTrackedErrorsStr != null) {
         this.latencyTrackedErrors = new HashSet<String>(Arrays.asList(
-            latencyTrackedErrors.split(",")));
+            latencyTrackedErrorsStr.split(",")));
       }
     }
 

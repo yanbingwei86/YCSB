@@ -63,8 +63,8 @@ public class ConstantOccupancyWorkload extends CoreWorkload {
 	@Override
 	public void init(Properties p) throws WorkloadException
 	{
-		disksize    = Long.parseLong(    p.getProperty(DISK_SIZE_PROPERTY, String.valueOf(DISK_SIZE_PROPERTY_DEFAULT)));
-		storageages = Long.parseLong(    p.getProperty(STORAGE_AGE_PROPERTY, String.valueOf(STORAGE_AGE_PROPERTY_DEFAULT)));
+		disksize    = Long.parseLong(p.getProperty(DISK_SIZE_PROPERTY, String.valueOf(DISK_SIZE_PROPERTY_DEFAULT)));
+		storageages = Long.parseLong(p.getProperty(STORAGE_AGE_PROPERTY, String.valueOf(STORAGE_AGE_PROPERTY_DEFAULT)));
 		occupancy   = Double.parseDouble(p.getProperty(OCCUPANCY_PROPERTY, String.valueOf(OCCUPANCY_PROPERTY_DEFAULT)));
 		
 		if(p.getProperty(Client.RECORD_COUNT_PROPERTY) != null ||

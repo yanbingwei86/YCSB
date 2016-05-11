@@ -106,7 +106,6 @@ public abstract class Workload
        * @return true if stop was requested, false otherwise.
        */
       public boolean isStopRequested() {
-        if (stopRequested.get() == true) return true;
-        else return false;
+        return stopRequested.get();
       }
 }

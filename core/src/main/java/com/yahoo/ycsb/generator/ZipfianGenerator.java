@@ -157,12 +157,12 @@ public class ZipfianGenerator extends NumberGenerator
 	 * zipfian constant theta. Remember the value of n, so if we change the itemcount, we can recompute zeta.
 	 * 
 	 * @param n The number of items to compute zeta over.
-	 * @param theta The zipfian constant.
+	 * @param d_theta The zipfian constant.
 	 */
-	double zeta(long n, double theta)
+	double zeta(long n, double d_theta)
 	{
 		countforzeta=n;
-		return zetastatic(n,theta);
+		return zetastatic(n, d_theta);
 	}
 	
 	/**
@@ -183,13 +183,13 @@ public class ZipfianGenerator extends NumberGenerator
 	 * 
 	 * @param st The number of items used to compute the last initialsum
 	 * @param n The number of items to compute zeta over.
-	 * @param theta The zipfian constant.
+	 * @param d_theta The zipfian constant.
      * @param initialsum The value of zeta we are computing incrementally from.
 	 */
-	double zeta(long st, long n, double theta, double initialsum)
+	double zeta(long st, long n, double d_theta, double initialsum)
 	{
 		countforzeta=n;
-		return zetastatic(st,n,theta,initialsum);
+		return zetastatic(st,n,d_theta,initialsum);
 	}
 	
 	/**
@@ -242,7 +242,7 @@ public class ZipfianGenerator extends NumberGenerator
 					zetan=zeta(countforzeta,itemcount,theta,zetan);
 					eta=(1-Math.pow(2.0/items,1-theta))/(1-zeta2theta/zetan);
 				}
-				else if ( (itemcount<countforzeta) && (allowitemcountdecrease) )
+				else if ((itemcount<countforzeta) && (allowitemcountdecrease))
 				{
 					//have to start over with zetan
 					//note : for large itemsets, this is very slow. so don't do it!

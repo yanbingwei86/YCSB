@@ -61,7 +61,7 @@ public class AcknowledgedCounterGenerator extends CounterGenerator
 	public void acknowledge(int value)
 	{
 		final int currentSlot = (value & WINDOW_MASK);
-		if (window[currentSlot] == true) {
+		if (window[currentSlot]) {
 			throw new RuntimeException("Too many unacknowledged insertion keys.");
 		}
 

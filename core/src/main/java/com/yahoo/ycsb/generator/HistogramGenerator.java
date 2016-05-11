@@ -20,7 +20,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import com.yahoo.ycsb.Utils;
-import com.yahoo.ycsb.generator.NumberGenerator;
 
 /**
  * Generate integers according to a histogram distribution.  The histogram

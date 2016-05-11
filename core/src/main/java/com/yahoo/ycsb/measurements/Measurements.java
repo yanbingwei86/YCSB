@@ -61,7 +61,7 @@ public class Measurements {
   /**
    * Return the singleton Measurements object.
    */
-  public synchronized static Measurements getMeasurements()
+  public static synchronized Measurements getMeasurements()
   {
     if (singleton==null)
     {
