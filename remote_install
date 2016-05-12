@@ -6,7 +6,7 @@ if [ $# -lt 1 ] ; then
 fi
 
 version=`grep '<groupId>com.yahoo.ycsb</groupId>' pom.xml  -A 2 |grep '<version>' |sed 's/^.*>\(.*\)<.*$/\1/g'`
-engine=mogucache
+engine=hbase10
 host=$1
 port=10022
 
@@ -24,8 +24,8 @@ gzFilePath=$engine/target/$gzFileName
 if [ -f $gzFilePath ] ; then
   echo scp -P $port $gzFilePath $host:~/
   scp -P $port $gzFilePath $host:~/
-  echo ssh -p $port $host "tar xvf $gzFileName; rm -rf $gzFileName"
-  ssh -p $port $host "tar xvf $gzFileName; rm -rf $gzFileName"
+  echo ssh -p $port $host "tar xf $gzFileName; rm -rf $gzFileName"
+  ssh -p $port $host "tar xf $gzFileName; rm -rf $gzFileName"
   exit 0
 else
   echo $gzFilePath not exist

@@ -40,7 +40,6 @@ public class RandomByteIterator extends ByteIterator {
       buffer[base+4] = (byte)(((bytes >> 20) & 63) + ' ');
       buffer[base+5] = (byte)(((bytes >> 25) & 95) + ' ');
     } catch (ArrayIndexOutOfBoundsException e) {
-      System.out.print("got ArrayIndexOutOfBoundsException");
     }
   }
 
