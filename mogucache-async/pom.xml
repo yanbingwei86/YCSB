@@ -26,7 +26,7 @@ LICENSE file.
   </parent>
   
   <artifactId>mogucache-async-binding</artifactId>
-  <name>MogucacheAsync DB Binding</name>
+  <name>Mogucache DB Binding</name>
   <packaging>jar</packaging>
 
   <dependencies>
