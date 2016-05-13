@@ -98,6 +98,7 @@ LICENSE file.
     <solr.version>5.4.0</solr.version>
     <tair.version>2.3.4</tair.version>
     <mogucache.version>0.0.2-SNAPSHOT</mogucache.version>
+    <mogucache-async.version>0.1.0-SNAPSHOT</mogucache-async.version>
   </properties>
 
   <modules>
@@ -134,6 +135,7 @@ LICENSE file.
     <!--<module>voldemort</module>-->
     <module>tair</module>
     <module>mogucache</module>
+    <module>mogucache-async</module>
     <module>mongodb</module>
     <module>redis</module>
     <module>riak</module>
