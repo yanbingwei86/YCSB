@@ -29,7 +29,7 @@ except ImportError:
     print >> sys.stderr, '[ERROR] argparse not found. Try installing it via "pip".'
     raise
 
-BASE_URL = "https://github.com/sel-fish/YCSB/tree/master/"
+BASE_URL = "https://github.com/yanbingwei86/YCSB/tree/master/"
 COMMANDS = {
     "shell" : {
         "command"     : "",

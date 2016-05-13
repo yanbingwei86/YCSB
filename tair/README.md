@@ -27,7 +27,7 @@ This section describes how to run YCSB on Tair.
 
 Git clone YCSB and compile:
 
-    git clone http://github.com/sel-fish/YCSB.git
+    git clone http://github.com/yanbingwei86/YCSB.git
     cd YCSB
     mvn -pl com.yahoo.ycsb:tair-binding -am clean package
 

@@ -27,7 +27,7 @@ This section describes how to run YCSB on Mogucache.
 
 Git clone YCSB and compile:
 
-    git clone http://github.com/sel-fish/YCSB.git
+    git clone http://github.com/yanbingwei86/YCSB.git
     cd YCSB
     mvn -pl com.yahoo.ycsb:mogucache-async-binding -am clean package
 
@@ -42,7 +42,7 @@ workload you plan to run.
 
 Or, you can set configs with the shell command, EG:
 
-    ./bin/ycsb load mogucache-async -s -P workloads/workloada -p "mogucache.mastercs=127.0.0.1:5198" -p "mogucache.namespace=bizname_1" > outputLoad.txt
+    ./bin/ycsb load mogucache-async -s -P workloads/workloada -p "mogucache.mastercs=10.11.6.203:8100" -p "mogucache.namespace=mogucache_test" > outputLoad.txt
 
 ### 5. Load data and run tests
 
