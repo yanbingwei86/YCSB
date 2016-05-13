@@ -29,6 +29,7 @@ Git clone YCSB and compile:
 
     git clone http://github.com/yanbingwei86/YCSB.git
     cd YCSB
+    ##编译所要测试的项目，在相应测试项目的target目录下生成压缩包
     mvn -pl com.yahoo.ycsb:mogucache-async-binding -am clean package
 
 ### 4. Provide Mogucache Connection Parameters
@@ -40,6 +41,7 @@ workload you plan to run.
 - `mogucache.slavecs`
 - `mogucache.namespace`
 
+    ##首先要解压压缩包，ycsb-mogucache-async-binding-0.9.0-SNAPSHOT.tar.gz，然后运行下面的测试命令
 Or, you can set configs with the shell command, EG:
 
     ./bin/ycsb load mogucache-async -s -P workloads/workloada -p "mogucache.mastercs=10.11.6.203:8100" -p "mogucache.namespace=mogucache_test" > outputLoad.txt
