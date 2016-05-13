@@ -36,7 +36,7 @@ import java.util.*;
  *
  * See {@code mogucache/README.md} for details.
  */
-public class MogucacheClient extends DB {
+public class MogucacheAsyncClient extends DB {
   private int maxValueLength = 4096;
   public static final String MASTERCS = "mogucache.mastercs";
   public static final String SLAVECS = "mogucache.slavecs";
