@@ -86,7 +86,7 @@ DATABASES = {
     "tarantool"    : "com.yahoo.ycsb.db.TarantoolClient",
     "voldemort"    : "com.yahoo.ycsb.db.VoldemortClient",
     "tair"         : "com.yahoo.ycsb.db.TairClient",
-    "mogucache"    : "com.yahoo.ycsb.db.MogucacheClient"
+    "mogucache"    : "com.yahoo.ycsb.db.MogucacheClient",
     "mogucache-async"    : "com.yahoo.ycsb.db.MogucacheAsyncClient"
 }
 
