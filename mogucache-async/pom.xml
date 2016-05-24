@@ -50,7 +50,7 @@ LICENSE file.
   <dependencies>
     <dependency>
       <groupId>com.mogujie.mst</groupId>
-      <artifactId>async-mogucache-client</artifactId>
+      <artifactId>mogucache-async-client</artifactId>
       <version>${mogucache-async.version}</version>
     </dependency>
     <dependency>

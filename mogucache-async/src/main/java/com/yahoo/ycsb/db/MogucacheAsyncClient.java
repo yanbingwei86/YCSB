@@ -25,6 +25,7 @@
 package com.yahoo.ycsb.db;
 
 import com.mogujie.mogucache.MoguCache;
+import com.mogujie.mogucache.MogucacheImpl;
 import com.mogujie.mogucache.MogucacheManager;
 import com.mogujie.mogucache.packet.Result;
 import com.yahoo.ycsb.*;
@@ -38,15 +39,9 @@ import java.util.*;
  */
 public class MogucacheAsyncClient extends DB {
   private int maxValueLength = 4096;
-  public static final String MASTERCS = "mogucache.mastercs";
-  public static final String SLAVECS = "mogucache.slavecs";
   public static final String NAMESPACE = "mogucache.namespace";
 
-  private MogucacheManager pool = null;
-  private String masterIP = "";
-  private int masterPort = 0;
-  private String slaveIP = "";
-  private int slavePort = 0;
+  private MogucacheImpl pool = null;
   private String namespace = "";
 
   public static String getHost(String address) {
@@ -74,33 +69,18 @@ public class MogucacheAsyncClient extends DB {
   public void init() throws DBException {
     Properties props = getProperties();
 
-    String masterString = props.getProperty(MASTERCS);
-    if (masterString != null) {
-      this.masterIP = getHost(masterString);
-      this.masterPort = getPort(masterString);
-    } else {
-      throw new DBException("must specify master configserver info");
-    }
-
-    String slaveString = props.getProperty(SLAVECS);
-    if (slaveString != null) {
-      this.slaveIP = getHost(slaveString);
-      this.slavePort = getPort(slaveString);
-    } else {
-      throw new DBException("must specify slave configserver info");
-    }
-
     namespace = props.getProperty(NAMESPACE);
     if (namespace == null) {
       throw new DBException("must specify namespace info");
     }
 
-    pool = new MogucacheManager(this.namespace, this.masterIP, this.masterPort, this.slaveIP, this.slavePort, 1000, 20000);
-    try {
-      pool.init();
-    } catch (Exception e) {
-      throw new DBException("mogucache init failed");
-    }
+    MogucacheManager manager = new MogucacheManager();
+    manager.init(this.namespace, 1000, 100000);
+      try {
+          pool = manager.getValidCacheObject();
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
   }
 
   public void cleanup() throws DBException {

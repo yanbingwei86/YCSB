@@ -43,9 +43,13 @@ workload you plan to run.
 
     ##首先要解压压缩包，ycsb-mogucache-async-binding-0.9.0-SNAPSHOT.tar.gz，然后运行下面的测试命令
 Or, you can set configs with the shell command, EG:
-
-    ./bin/ycsb load mogucache-async -s -P workloads/workloada -p "mogucache.mastercs=10.11.6.203:8100" -p "mogucache.namespace=mogucache_test" > outputLoad.txt
-
+    
+    "step one by one":
+    cd mogucache-async/
+    tar zxvf ycsb-mogucache-async-binding-0.9.0-SNAPSHOT.tar.gz
+    cd ycsb-mogucache-async-binding-0.9.0-SNAPSHOT
+    ##nohup ./bin/ycsb load mogucache-async -s -P workloads/workloada -p "mogucache.mastercs=10.11.6.203:8100" -p "mogucache.namespace=mogucache_test" > outputLoad.txt &
+    nohup ./bin/ycsb load mogucache-async -s -P workloads/workloada -p "mogucache.namespace=mogucache_test" > outputLoad.txt &
 ### 5. Load data and run tests
 
 Load the data:
