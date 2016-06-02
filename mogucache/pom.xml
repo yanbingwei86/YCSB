@@ -32,7 +32,7 @@ LICENSE file.
   <dependencies>
     <dependency>
       <groupId>com.mogujie.mst</groupId>
-      <artifactId>mogucache-client-persistence</artifactId>
+      <artifactId>mogucache-client</artifactId>
       <version>${mogucache.version}</version>
     </dependency>
     <dependency>

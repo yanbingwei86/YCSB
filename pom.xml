@@ -97,7 +97,7 @@ LICENSE file.
     <aerospike.version>3.1.2</aerospike.version>
     <solr.version>5.4.0</solr.version>
     <tair.version>2.3.4</tair.version>
-    <mogucache.version>0.0.2-SNAPSHOT</mogucache.version>
+    <mogucache.version>0.1.5-SNAPSHOT</mogucache.version>
     <mogucache-async.version>0.1.5-SNAPSHOT</mogucache-async.version>
   </properties>
 
