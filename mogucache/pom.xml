@@ -24,8 +24,14 @@ LICENSE file.
     <version>0.9.0-SNAPSHOT</version>
     <relativePath>../binding-parent</relativePath>
   </parent>
-  
-  <artifactId>mogucache-binding</artifactId>
+
+    <properties>
+        <local.repo.host>http://maven.mogujie.org</local.repo.host>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>3.2.0.RELEASE</spring.version>
+    </properties>
+
+    <artifactId>mogucache-binding</artifactId>
   <name>Mogucache DB Binding</name>
   <packaging>jar</packaging>
 
