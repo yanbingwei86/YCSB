@@ -25,11 +25,10 @@
 package com.yahoo.ycsb.db;
 
 import com.mogujie.mogucache.config.CachePoolConfig;
-import com.mogujie.mogucache.exception.CacheConnectionException;
-import com.mogujie.mogucache.link.MoguCache;
 import com.mogujie.mogucache.node.Result;
-import com.mogujie.mogucache.pool.MoguCachePool;
+import com.mogujie.mogucache.pool.MoguCacheFactory;
 import com.yahoo.ycsb.*;
+
 import java.util.*;
 
 /**
@@ -43,7 +42,7 @@ public class MogucacheClient extends DB {
   public static final String SLAVECS = "mogucache.slavecs";
   public static final String NAMESPACE = "mogucache.namespace";
 
-  private MoguCachePool pool = null;
+  private MoguCacheFactory pool = null;
   private String masterIP = "";
   private int masterPort = 0;
   private String slaveIP = "";
@@ -103,8 +102,8 @@ public class MogucacheClient extends DB {
     config.setTestOnBorrow(false);
     config.setTestOnReturn(false);
 
-    pool = new MoguCachePool(config, this.masterIP, this.masterPort,
-            this.slaveIP, this.slavePort, this.namespace, 20000);
+    pool = new MoguCacheFactory(config, this.namespace, this.masterIP, this.masterPort,
+            this.slaveIP, this.slavePort, 20000, 100);
     try {
       pool.init();
     } catch (Exception e) {
@@ -113,7 +112,7 @@ public class MogucacheClient extends DB {
   }
 
   public void cleanup() throws DBException {
-    pool.destroy();
+    pool.close();
   }
 
   private String getValueStr(HashMap<String, ByteIterator> values) {
@@ -132,10 +131,8 @@ public class MogucacheClient extends DB {
   @Override
   public Status read(String table, String key, Set<String> fields,
                      HashMap<String, ByteIterator> result) {
-    MoguCache cache = null;
     try {
-      cache = pool.getResource();
-      Result<String> rslt = cache.get(key);
+      Result<String> rslt = pool.get(key);
       if (rslt.isSuccess()) {
         if (null != rslt.getValue()) {
           return Status.OK;
@@ -145,15 +142,8 @@ public class MogucacheClient extends DB {
       } else {
         return Status.ERROR;
       }
-    } catch (CacheConnectionException e) {
-      if (null != cache) {
-        pool.returnBrokenResource(cache);
-      }
-      cache = null;
-    } finally {
-      if (null != cache) {
-        pool.returnResource(cache);
-      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     return Status.ERROR;
   }
@@ -161,24 +151,15 @@ public class MogucacheClient extends DB {
   @Override
   public Status insert(String table, String key,
                        HashMap<String, ByteIterator> values) {
-    MoguCache cache = null;
     try {
-      cache = pool.getResource();
-      Result<String> rslt = cache.set(key, getValueStr(values));
+      Result<String> rslt = pool.set(key, getValueStr(values));
       if (rslt.isSuccess()) {
         return Status.OK;
       } else {
         return Status.ERROR;
       }
-    } catch (CacheConnectionException e) {
-      if (null != cache) {
-        pool.returnBrokenResource(cache);
-      }
-      cache = null;
-    } finally {
-      if (null != cache) {
-        pool.returnResource(cache);
-      }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
     return Status.ERROR;
   }
