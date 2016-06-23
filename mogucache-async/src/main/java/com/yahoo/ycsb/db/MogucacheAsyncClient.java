@@ -77,7 +77,7 @@ public class MogucacheAsyncClient extends DB {
     MogucacheManager manager = new MogucacheManager();
     manager.init(this.namespace, 1000, 100000);
       try {
-          pool = manager.getValidCacheObject();
+          pool = manager.getCacheObject(NAMESPACE);
       } catch (Exception e) {
           e.printStackTrace();
       }
