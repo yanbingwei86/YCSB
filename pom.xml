@@ -99,6 +99,7 @@ LICENSE file.
     <tair.version>2.3.4</tair.version>
     <mogucache.version>0.1.8-SNAPSHOT</mogucache.version>
     <mogucache-async.version>0.2.0-SNAPSHOT</mogucache-async.version>
+    <mogucache-sync.version>0.1.0-SNAPSHOT</mogucache-sync.version>
   </properties>
 
   <modules>
@@ -136,6 +137,7 @@ LICENSE file.
     <module>tair</module>
     <module>mogucache</module>
     <module>mogucache-async</module>
+    <module>mogucache-sync</module>
     <module>mongodb</module>
     <module>redis</module>
     <module>riak</module>

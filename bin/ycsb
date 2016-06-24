@@ -87,7 +87,8 @@ DATABASES = {
     "voldemort"    : "com.yahoo.ycsb.db.VoldemortClient",
     "tair"         : "com.yahoo.ycsb.db.TairClient",
     "mogucache"    : "com.yahoo.ycsb.db.MogucacheClient",
-    "mogucache-async"    : "com.yahoo.ycsb.db.MogucacheAsyncClient"
+    "mogucache-async"    : "com.yahoo.ycsb.db.MogucacheAsyncClient",
+    "mogucache-sync"    : "com.yahoo.ycsb.db.MogucacheSyncClient"
 }
 
 OPTIONS = {
