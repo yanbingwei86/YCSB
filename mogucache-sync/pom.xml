@@ -31,7 +31,7 @@ LICENSE file.
         <spring.version>3.2.0.RELEASE</spring.version>
     </properties>
 
-    <artifactId>mogucache-binding</artifactId>
+    <artifactId>mogucache-sync-binding</artifactId>
   <name>Mogucache DB Binding</name>
   <packaging>jar</packaging>
 

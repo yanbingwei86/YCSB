@@ -29,7 +29,7 @@ Git clone YCSB and compile:
 
     git clone http://github.com/sel-fish/YCSB.git
     cd YCSB
-    mvn -pl com.yahoo.ycsb:mogucache-binding -am clean package
+    mvn -pl com.yahoo.ycsb:mogucache-sync-binding -am clean package
 
 ### 4. Provide Mogucache Connection Parameters
     
@@ -42,7 +42,7 @@ workload you plan to run.
 
 Or, you can set configs with the shell command, EG:
 
-    ./bin/ycsb load mogucache -s -P workloads/workloada -p "mogucache.mastercs=127.0.0.1:5198" -p "mogucache.namespace=bizname_1" > outputLoad.txt
+    ./bin/ycsb load mogucache -s -P workloads/workloada -p "mogucache.namespace=bizname_1" > outputLoad.txt
 
 ### 5. Load data and run tests
 
