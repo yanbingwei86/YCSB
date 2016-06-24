@@ -24,12 +24,10 @@
 
 package com.yahoo.ycsb.db;
 
-import com.mogujie.mogucache.MoguCache;
 import com.mogujie.mogucache.MogucacheImpl;
 import com.mogujie.mogucache.MogucacheManager;
 import com.mogujie.mogucache.packet.Result;
 import com.yahoo.ycsb.*;
-
 import java.util.*;
 
 /**
@@ -41,7 +39,7 @@ public class MogucacheAsyncClient extends DB {
   private int maxValueLength = 4096;
   public static final String NAMESPACE = "mogucache.namespace";
 
-  private MogucacheImpl pool = null;
+  private MogucacheManager manager = new MogucacheManager();;
   private String namespace = "";
 
   public static String getHost(String address) {
@@ -73,18 +71,11 @@ public class MogucacheAsyncClient extends DB {
     if (namespace == null) {
       throw new DBException("must specify namespace info");
     }
-
-    MogucacheManager manager = new MogucacheManager();
     manager.init(this.namespace, 1000, 100000);
-      try {
-          pool = manager.getCacheObject(NAMESPACE);
-      } catch (Exception e) {
-          e.printStackTrace();
-      }
   }
 
   public void cleanup() throws DBException {
-    pool.close();
+      manager.close(namespace);
   }
 
   private String getValueStr(HashMap<String, ByteIterator> values) {
@@ -103,9 +94,9 @@ public class MogucacheAsyncClient extends DB {
   @Override
   public Status read(String table, String key, Set<String> fields,
                      HashMap<String, ByteIterator> result) {
-    MoguCache cache = null;
+    MogucacheImpl cache = null;
     try {
-      cache = pool;
+      cache = manager.getCacheObject(namespace);
       Result<String> rslt = cache.get(key);
       if (rslt.isSuccess()) {
         if (null != rslt.getValue()) {
@@ -125,9 +116,9 @@ public class MogucacheAsyncClient extends DB {
   @Override
   public Status insert(String table, String key,
                        HashMap<String, ByteIterator> values) {
-    MoguCache cache = null;
+    MogucacheImpl cache = null;
     try {
-      cache = pool;
+      cache = manager.getCacheObject(namespace);
       Result<String> rslt = cache.set(key, getValueStr(values));
       if (rslt.isSuccess()) {
         return Status.OK;
