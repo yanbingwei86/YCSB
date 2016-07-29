@@ -42,15 +42,15 @@ workload you plan to run.
 
 Or, you can set configs with the shell command, EG:
 
-    ./bin/ycsb load mogucache -s -P workloads/workloada -p "kvstore.namespace=bizname_1" > outputLoad.txt
+    ./bin/ycsb load kvstore -s -P workloads/workloada -p "kvstore.namespace=bizname_1" > outputLoad.txt
 
 ### 5. Load data and run tests
 
 Load the data:
 
-    ./bin/ycsb load mogucache -s -P workloads/workloada > outputLoad.txt
+    ./bin/ycsb load kvstore -s -P workloads/workloada > outputLoad.txt
 
 Run the workload test:
 
-    ./bin/ycsb run mogucache -s -P workloads/workloada > outputRun.txt
+    ./bin/ycsb run kvstore -s -P workloads/workloada > outputRun.txt
 
