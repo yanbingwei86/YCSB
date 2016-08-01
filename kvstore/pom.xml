@@ -38,7 +38,7 @@ LICENSE file.
   <dependencies>
     <dependency>
       <groupId>com.mogujie.mst</groupId>
-      <artifactId>kvstore-client</artifactId>
+      <artifactId>kvstore-indep-client</artifactId>
       <version>${kvstore.version}</version>
     </dependency>
     <dependency>

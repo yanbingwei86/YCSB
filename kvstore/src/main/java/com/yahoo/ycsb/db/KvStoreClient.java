@@ -81,8 +81,9 @@ public class KvStoreClient extends DB {
     config.setMaxWait(512);
     config.setTestOnBorrow(false);
     config.setTestOnReturn(false);
-
-    pool = new MoguCacheFactory(config, namespace, 1000, 1000000);
+    Map<String, Integer> map = new HashMap<>();
+      map.put("10.13.132.124", 7400);
+    pool = new MoguCacheFactory(config, namespace, 1000, map);
     try {
       pool.init();
     } catch (Exception e) {

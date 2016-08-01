@@ -103,7 +103,7 @@ public class MogucacheClient extends DB {
     config.setTestOnReturn(false);
 
     pool = new MoguCacheFactory(config, this.namespace, this.masterIP, this.masterPort,
-            this.slaveIP, this.slavePort, 20000, 100);
+            this.slaveIP, this.slavePort, 1000);
     try {
       pool.init();
     } catch (Exception e) {

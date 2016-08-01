@@ -89,7 +89,7 @@ DATABASES = {
     "mogucache"    : "com.yahoo.ycsb.db.MogucacheClient",
     "mogucache-async"    : "com.yahoo.ycsb.db.MogucacheAsyncClient",
     "mogucache-sync"    : "com.yahoo.ycsb.db.MogucacheSyncClient",
-    "kvstore"    : "com.yahoo.ycsb.db.KvStoreClient.java"
+    "kvstore"    : "com.yahoo.ycsb.db.KvStoreClient"
 }
 
 OPTIONS = {
